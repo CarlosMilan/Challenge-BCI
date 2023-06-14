@@ -19,8 +19,8 @@ Este proyecto fue desarrollado usando
 
 #### Sing-up
 
-![Diagrama de secuencua sing-up](https://github.com/CarlosMilan/desafio-bci/blob/develop/Diagramas/Sing-up.jpg?raw=true)
+![Diagrama de secuencua sing-up](https://github.com/CarlosMilan/Challenge-BCI/blob/develop/Diagramas/Sing-up.jpg)
 
 #### Login
 
-![Diagrama de secuencua login](https://github.com/CarlosMilan/desafio-bci/blob/develop/Diagramas/Sing-up.jpg?raw=true)
+![Diagrama de secuencua login](https://github.com/CarlosMilan/Challenge-BCI/blob/develop/Diagramas/Login.svg.jpg)
