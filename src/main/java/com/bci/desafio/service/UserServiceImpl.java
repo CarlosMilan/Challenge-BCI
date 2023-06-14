@@ -16,6 +16,7 @@ import com.bci.desafio.utils.Constants;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,10 +37,6 @@ public class UserServiceImpl implements UserService{
     private final UserDetailsServiceImpl userDetailsService;
     private final JWTUtils jwtUtils;
     private final UserMapper userMapper;
-
-    public User getUser(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
-    }
 
     public UserResponseDTO userRegister(UserDTO userDTO) {
         log.info("Registering user {}", userDTO);
@@ -98,7 +95,8 @@ public class UserServiceImpl implements UserService{
 
     public LoginResponseDTO login(String token) {
         String username = jwtUtils.getUsername(token);
-        User user = userRepository.findByEmail(username);
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         List<Phone> phones = phoneRepository.findByUser(user);
         String newToken = createToken(user);
         user.setLastLogin(LocalDateTime.now());

@@ -1,0 +1,52 @@
+def jacocoExcludes = [
+        'com/bci/desafio/domain/**', 'com/bci/desafio/dto/**', 'com/bci/desafio/security/**'
+]
+
+def jacocoIncludes = [
+        'com/bci/desafio/controller/**', 'com/bci/desafio/repository/**', 'com/bci/desafio/service/**'
+]
+
+jacocoTestReport {
+    getExecutionData().from(fileTree(dir: "${buildDir}/jacoco", include: '**/*.exec'))
+    reports {
+        xml.enabled true
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            //fileTree(dir: it, exclude: jacocoExcludes)
+            fileTree(dir: it, include: jacocoIncludes)
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            //fileTree(dir: it, exclude: jacocoExcludes)
+            fileTree(dir: it, include: jacocoIncludes)
+        }))
+    }
+    violationRules {
+        rule {
+            enabled = true
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.85
+            }
+        }
+        rule {
+            enabled = true
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.8
+            }
+        }
+
+    }
+}
+jacocoTestReport {
+    dependsOn test
+}

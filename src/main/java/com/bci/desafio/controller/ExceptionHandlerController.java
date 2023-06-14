@@ -5,6 +5,7 @@ import com.bci.desafio.exceptions.ConstraintsException;
 import com.bci.desafio.exceptions.UserAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,6 +45,12 @@ public class ExceptionHandlerController {
     @ExceptionHandler(UserAlreadyExistException.class)
     public ResponseEntity<Error> handleUserAlreadyExistException(UserAlreadyExistException ex) {
         Error error = new Error(new Timestamp(new Date().getTime()),HttpStatus.BAD_REQUEST.value() , ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Error> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+        Error error = new Error(new Timestamp(new Date().getTime()), HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
